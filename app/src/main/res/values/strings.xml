@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Movies Info</string>
+    <string name="overview">Overview :</string>
+    <string name="movie_cast">Cast :</string>
+    <string name="movie_media_type">Media-type :</string>
+    <string name="movie_rating">Rating :</string>
+    <string name="image_poster">Image poster</string>
+</resources>
