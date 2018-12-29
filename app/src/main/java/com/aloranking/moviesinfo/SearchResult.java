@@ -1,6 +1,7 @@
 package com.aloranking.moviesinfo;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.aloranking.moviesinfo.Adapter.GenresResponse;
@@ -20,9 +22,14 @@ import com.aloranking.moviesinfo.Model.ResultSearched;
 import com.aloranking.moviesinfo.rest.ClickListener;
 import com.aloranking.moviesinfo.rest.OnGetGenresCallback;
 import com.aloranking.moviesinfo.rest.OnGetMoviesCallback;
+import com.victor.loading.rotate.RotateLoading;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
+
+
 
 public class SearchResult extends AppCompatActivity {
 
@@ -32,12 +39,23 @@ public class SearchResult extends AppCompatActivity {
     private MoviesRepository moviesRepository;
 
     public String query;
+    private ProgressBar progressBar;
+    RotateLoading rotateLoading;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_search_result);
+        rotateLoading = findViewById(R.id.rotateloading);
+        rotateLoading.setLoadingColor(Color.BLUE);
+
+        rotateLoading.start();
+
+
 
 
 
@@ -63,6 +81,7 @@ public class SearchResult extends AppCompatActivity {
         moviesRepository.getGenres(new OnGetGenresCallback() {
             @Override
             public void onSuccess(List<Genre> genres) {
+                //progressBar.setVisibility(View.VISIBLE);
                 getMovies(genres);
             }
 
@@ -83,6 +102,10 @@ public class SearchResult extends AppCompatActivity {
 
             @Override
             public void onSuccessSearched(final List<ResultSearched> resultSearchedList) {
+
+
+                rotateLoading.stop();
+
                 moviesAdapter = new MoviesAdapter(resultSearchedList, genres);
                 moviesList.setAdapter(moviesAdapter);
                 moviesAdapter.setOnItemClickListener(new ClickListener() {
